@@ -1,5 +1,13 @@
 # ⚡ Monitor de Energia Inteligente
 
+## 🌐 Aplicação na Nuvem
+
+**A aplicação está hospedada na AWS e pode ser acessada publicamente no link abaixo:**
+
+[http://meu-monitor-energia-frontend.s3-website.us-east-2.amazonaws.com](http://meu-monitor-energia-frontend.s3-website.us-east-2.amazonaws.com)
+
+---
+
 Um dashboard full-stack para monitoramento de consumo de energia residencial. A aplicação permite que os usuários cadastrem cômodos e aparelhos, calculem o consumo mensal e recebam análises e dicas de economia geradas por Inteligência Artificial (Google Gemini).
 
 Este projeto foi desenvolvido com uma arquitetura moderna, separando o FrontEnd (React com Context API) do BackEnd (Node.js/Express) para melhor manutenibilidade e escalabilidade.
@@ -17,92 +25,32 @@ Este projeto foi desenvolvido com uma arquitetura moderna, separando o FrontEnd 
     * Gera uma expectativa de consumo (IA) vs. o consumo real para cada cômodo.
     * Fornece dicas de economia personalizadas para os cômodos que estão gastando acima do esperado.
 
-## 🛠️ Tecnologias Utilizadas
+## 🛠️ Tecnologias e Arquitetura de Nuvem
 
-### 🖥️ FrontEnd
+### 🖥️ FrontEnd (React)
 * **React:** Biblioteca principal para a construção da interface.
 * **React Context API:** Gerenciamento de estado global (autenticação e dados da aplicação).
 * **TailwindCSS:** Framework de estilização utility-first.
 * **Recharts:** Biblioteca para a criação dos gráficos de consumo e comparativos.
 * **Lucide React:** Pacote de ícones leve e moderno.
 
-### ⚙️ BackEnd
-* **Node.js:** Ambiente de execução do servidor.
-* **Express.js:** Framework para a construção da API REST.
-* **MySQL:** Banco de dados relacional (utilizando `mysql2/promise`).
-* **JWT (jsonwebtoken):** Para geração e verificação de tokens de autenticação.
-* **bcrypt:** Para hashing seguro de senhas.
+### ⚙️ BackEnd (Node.js)
+* **Node.js / Express.js:** Framework para a construção da API REST.
+* **MySQL (`mysql2/promise`):** Banco de dados relacional.
+* **JWT (jsonwebtoken) & bcrypt:** Para autenticação segura e hashing de senhas.
 * **Google Gemini API:** Para a funcionalidade de análise inteligente.
 
-## 🏃‍♂️ Como Rodar o Projeto
+### ☁️ Infraestrutura de Nuvem (AWS) e CI/CD
+Este projeto é implantado automaticamente na AWS usando GitHub Actions, seguindo as melhores práticas de CI/CD.
 
-Para rodar este projeto, você precisará ter o **Node.js** e um servidor **MySQL** em execução.
+* **GitHub Actions (CI/CD):** Automatiza os processos de build e deploy. Qualquer `push` para a branch `main` dispara os pipelines que atualizam o FrontEnd e o BackEnd.
+* **AWS S3 (Simple Storage Service):** Hospeda o aplicativo FrontEnd (React), servindo os arquivos estáticos (HTML, CSS, JS) para o mundo.
+* **AWS RDS (Relational Database Service):** Fornece um banco de dados MySQL gerenciado, seguro e escalável.
+* **Docker:** O BackEnd é containerizado para garantir consistência entre o desenvolvimento e a produção.
+* **Amazon ECR (Elastic Container Registry):** Armazena as imagens Docker do nosso BackEnd.
+* **Amazon ECS (Elastic Container Service) com AWS Fargate:** Executa o container do BackEnd de forma *serverless*, gerenciando a execução, saúde e escalabilidade da API sem a necessidade de gerenciar servidores.
 
-### 1. Configuração do BackEnd
-
-O BackEnd é responsável por servir a API e se comunicar com o banco de dados.
-
-1.  **Navegue até a pasta do backend:**
-    ```bash
-    cd backend
-    ```
-
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-
-3.  **Configure as Variáveis de Ambiente:**
-    Crie um arquivo `.env` na raiz da pasta `backend/` com base no seu arquivo `.env.example` (se tiver um) ou copie o modelo abaixo. Você **precisa** preencher estas variáveis:
-
-    ```.env
-    # Configuração do Banco de Dados
-    DB_HOST=localhost
-    DB_USER=root
-    DB_PASSWORD=sua_senha_do_mysql
-    DB_NAME=energia_db
-    
-    # Chave secreta para o JWT 
-    JWT_SECRET=energia_secret_2024_muito_seguro
-    
-    # Chave da API do Google Gemini
-    GEMINI_API_KEY=SUA_CHAVE_DA_API_GEMINI_AQUI
-    ```
-
-4.  **Configure o Banco de Dados:**
-    * Certifique-se de que seu servidor MySQL está rodando.
-    * Crie um banco de dados com o nome que você definiu em `DB_NAME` (ex: `CREATE DATABASE energia_db;`).
-    * O servidor criará as tabelas (`usuarios`, `comodos`, `aparelhos`) automaticamente na primeira vez que for iniciado (graças à função `initDatabase`).
-
-5.  **Inicie o servidor backend:**
-    ```bash
-    npm run dev
-    ```
-    O servidor estará rodando em `http://localhost:3001`.
-
-### 2. Configuração do FrontEnd
-
-O FrontEnd é a aplicação React que o usuário acessa no navegador.
-
-1.  **Abra um novo terminal** e navegue até a pasta do frontend:
-    ```bash
-    cd frontend 
-    ```
-
-2.  **Instale as dependências:**
-    ```bash
-    npm install
-    ```
-
-3.  **Inicie a aplicação React:**
-    ```bash
-    npm start
-    ```
-    A aplicação será aberta automaticamente no seu navegador em `http://localhost:3000`.
-
-Agora você pode se cadastrar, fazer login e começar a usar o sistema!
-
-## API Endpoints
+## 📖 API Endpoints
 
 O BackEnd segue uma arquitetura RESTful. Todas as rotas são prefixadas com `/api`.
 
