@@ -54,7 +54,7 @@ jobs:
             GEMINI_API_KEY=${{ secrets.GEMINI_API_KEY }}
 
       - name: Implantar no ECS Fargate
-        uses: aws-actions/amazon-ecs-deploy-task-definition@v8.2.1
+        uses: aws-actions/amazon-ecs-deploy-task-definition@v2.4.0
         with:
           task-definition: ${{ steps.task-def.outputs.taskDefinition }}
           service: monitor-backend-service
