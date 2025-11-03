@@ -1,4 +1,5 @@
 import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
+import { API_URL } from '../constants';
 
 const AuthContext = createContext();
 
