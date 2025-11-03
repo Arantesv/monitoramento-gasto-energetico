@@ -27,7 +27,7 @@ jobs:
         run: npm run build
         working-directory: ./frontend
         env:
-          REACT_APP_API_URL: http://SEU_BACKEND_URL_AQUI/api 
+          REACT_APP_API_URL: http://monitor-alb-817828735.us-east-2.elb.amazonaws.com/api
 
       - name: Configurar AWS Credentials
         uses: aws-actions/configure-aws-credentials@v4
