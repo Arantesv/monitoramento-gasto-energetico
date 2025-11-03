@@ -45,7 +45,7 @@ jobs:
           task-definition: task-definition.json
           container-name: monitor-backend-container
           image: ${{ steps.build-image.outputs.image }}
-          secrets: |
+          environment-variables: |
             DB_HOST=${{ secrets.DB_HOST }}
             DB_USER=${{ secrets.DB_USER }}
             DB_PASSWORD=${{ secrets.DB_PASSWORD }}
