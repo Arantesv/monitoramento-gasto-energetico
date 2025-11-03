@@ -56,7 +56,7 @@ jobs:
       - name: Implantar no ECS Fargate
         uses: aws-actions/amazon-ecs-deploy-task-definition@v2.4.0
         with:
-          task-definition: ${{ steps.task-def.outputs.taskDefinition }}
+          task-definition: ${{ steps.render-task-def.outputs.task-definition }}
           service: monitor-backend-service
           cluster: ${{ secrets.AWS_ECS_CLUSTER }}
           wait-for-service-stability: true
