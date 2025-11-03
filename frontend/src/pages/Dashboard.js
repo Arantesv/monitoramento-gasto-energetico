@@ -6,7 +6,7 @@ import { BarChart, Bar, Cell, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveCo
 import { Home, Zap, BarChart3, DollarSign, TrendingDown } from 'lucide-react';
 
 export default function Dashboard() {
-  const { consumoData, relatorioMensal, categoriasData, mediaGeral, mediaBrasil, comodos, totais } = useData();
+  const { consumoData, relatorioMensal, categoriasData, comodos, totais } = useData();
   const { usuario } = useAuth();
 
   return (

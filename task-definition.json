@@ -1,0 +1,35 @@
+{
+    "family": "monitor-task-family",
+    "containerDefinitions": [
+      {
+        "name": "monitor-backend-container",
+        "image": "PLACEHOLDER_IMAGE_URL",
+        "cpu": 256,
+        "memory": 512,
+        "portMappings": [
+          {
+            "containerPort": 3001,
+            "hostPort": 3001,
+            "protocol": "tcp"
+          }
+        ],
+        "essential": true,
+        "secrets": [],
+        "logConfiguration": {
+          "logDriver": "awslogs",
+          "options": {
+            "awslogs-group": "/ecs/monitor-backend-task",
+            "awslogs-region": "us-east-2",
+            "awslogs-stream-prefix": "ecs"
+          }
+        }
+      }
+    ],
+    "requiresCompatibilities": [
+      "FARGATE"
+    ],
+    "networkMode": "awsvpc",
+    "cpu": "256",
+    "memory": "512",
+    "executionRoleArn": "arn:aws:iam::180920475342:role/ecsTaskExecutionRole"
+  }

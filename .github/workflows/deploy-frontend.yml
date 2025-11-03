@@ -1,0 +1,41 @@
+name: Deploy Frontend
+
+on:
+  push:
+    branches: [ master ]
+    paths:
+      - 'frontend/**'
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Configurar Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+
+      - name: Instalar Dependências do Frontend
+        run: npm install
+        working-directory: ./frontend
+      
+      - name: Buildar Aplicação React
+        run: npm run build
+        working-directory: ./frontend
+        env:
+          REACT_APP_API_URL: http://SEU_BACKEND_URL_AQUI/api 
+
+      - name: Configurar AWS Credentials
+        uses: aws-actions/configure-aws-credentials@v4
+        with:
+          aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
+          aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          aws-region: ${{ secrets.AWS_REGION }}
+
+      - name: Sincronizar arquivos com S3
+        run: |
+          aws s3 sync ./frontend/build s3://${{ secrets.AWS_S3_BUCKET_FRONTEND }}
