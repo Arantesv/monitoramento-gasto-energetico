@@ -1,5 +1,4 @@
-import React, { createContext, useState, useContext, useEffect } from 'react';
-import { API_URL } from '../constants';
+import React, { createContext, useState, useContext, useEffect, useCallback } from 'react';
 
 const AuthContext = createContext();
 
@@ -8,15 +7,13 @@ export const AuthProvider = ({ children }) => {
     const [usuario, setUsuario] = useState(null);
     const [loading, setLoading] = useState(true);
 
-    useEffect(() => {
-        if (token) {
-            verificarToken();
-        } else {
-            setLoading(false);
-        }
-    }, [token]);
+    const logout = useCallback(() => {
+        localStorage.removeItem('token');
+        setToken(null);
+        setUsuario(null);
+    }, []);
 
-    const verificarToken = async () => {
+    const verificarToken = useCallback(async () => {
         setLoading(true);
         try {
             const res = await fetch(`${API_URL}/auth/me`, {
@@ -34,7 +31,15 @@ export const AuthProvider = ({ children }) => {
         } finally {
             setLoading(false);
         }
-    };
+    }, [token, logout]);
+
+    useEffect(() => {
+        if (token) {
+            verificarToken();
+        } else {
+            setLoading(false);
+        }
+    }, [token, verificarToken]);
 
     const login = async (loginData) => {
         try {
@@ -78,12 +83,6 @@ export const AuthProvider = ({ children }) => {
             alert('Erro ao conectar com servidor');
             throw error;
         }
-    };
-
-    const logout = () => {
-        localStorage.removeItem('token');
-        setToken(null);
-        setUsuario(null);
     };
 
     return (
